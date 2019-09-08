@@ -5,8 +5,8 @@ public class MyText
 	public static void main(String[] args) 
 	{
 		System.out.println("OK");
+		System.out.println("MARK");
 		System.out.println("OK");
 		System.out.println("OK");System.out.println("OK");
-		System.out.println("MARK");
 	}
 }
