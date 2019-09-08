@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="../js/vue.js" ></script>
+		<script type="text/javascript" src="../js/vue-resource.js" ></script>
+		<title></title>
+	</head>
+	<body>
+		<div id="form">
+			<label>姓名</label>
+			<input type="name" v-model="name"/><br>
+				<label>出场价</label>
+			<input type="name" v-model="price"/><br>
+				<label>折扣</label>
+			<input type="name" v-model="zhekou"/><br>
+			<button @click="submit">提交</button>
+			<button @click="query">查询</button>
+			<hr>
+			key的作用主要是为了高效的更新虚拟DOM
+			<table>
+			
+				<mycomponent v-for="(user,index,key) in users" v-bind:key="key" v-bind:user="user" v-bind:index="index" @del="del" @update="update"/>
+			</table>
+		</div>
+		
+		<script>
+		var mycomponent = {
+				/* data(){
+					return {totprice:''}
+				}, */
+				props:['user','index'],
+				template:'<tr>'+
+					'<td>{{index+1}}</td>'+
+					'<td>{{user.name}}</td>'+
+					'<td>{{user.price}}</td>'+
+					'<td>{{user.zhekou}}</td>'+
+					'<td>{{user.price*user.zhekou/10}}</td>'+
+					'<td><button @click="del">删除</button><button @click="update">修改</button></td></tr>',
+				methods:{
+					del:function()
+					{
+						this.$emit("del",this.index);
+					},
+					update:function()
+					{
+						this.$emit("update",this.index);
+					}
+				}
+				
+			};
+			new Vue({
+				el:"#form",
+				data:{
+					name:'',
+					price:'',
+					zhekou:'',
+					users:[]
+				},
+				components:
+				{
+					mycomponent:mycomponent	
+				},
+				methods:{
+					submit:function()
+					{
+						var user = {"name":this.$data.name,"price":this.$data.price,"zhekou":this.$data.zhekou}
+						this.$http.post("http://127.0.0.1:8080/ssm/user/add",user).then(function(){alert("成功");},function(){alert("失败");});
+					},
+					query:function()
+					{
+						this.$http.post("http://127.0.0.1:8080/ssm/user/query"/* , {
+				            headers: {
+				                "X-Requested-With": "XMLHttpRequest"
+				            },
+				            emulateJSON: true
+				        } */)
+						.then(
+								// 测试data
+								function(data){
+									/*  var sendJson = JSON.stringify(data.body); */
+									this.$data.users = data.body;},function(){alert("失败");});
+					},
+					del:function(obj)
+					{
+						this.$data.users.splice(obj,1);
+						//this.$data.items.push(this.$data.msg);
+					},
+					update:function(obj)
+					{
+						alert(obj);
+					}
+				}
+				
+			});
+		</script>
+	</body>
+</html>
