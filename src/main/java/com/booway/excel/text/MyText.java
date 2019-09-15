@@ -16,6 +16,6 @@ public class MyText
 		System.out.println("jml6");
 		System.out.println("jml8");
 		System.out.println("jml9");
-
+System.out.println("jml10");
 	}
 }
