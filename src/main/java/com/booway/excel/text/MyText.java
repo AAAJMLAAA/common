@@ -12,6 +12,7 @@ public class MyText
 		System.out.println("jml2");
 		System.out.println("jml4");
 		System.out.println("jml5");
+		System.out.println("jml6");
 
 	}
 }
